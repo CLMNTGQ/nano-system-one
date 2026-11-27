@@ -4,6 +4,82 @@
 
 nano-system-one is a from-scratch experiment in **structured decision output on an edge robot**. Each inference answers a bounded question: given recent observations, which allowed behavior should the MicroDuck propose? The controller consumes a behavior identifier and retains authority to act.
 
+## Run System One on your MicroDuck
+
+This quick start runs the trained model **on the robot CPU in shadow mode**. It reads ball detections and robot state, proposes `track`, `search` or `wait`, and records the controller's reported phase alongside the proposal. MicroDuck's existing controller continues to drive the robot. The shipped integration supports observation and replay; using the proposal to drive the motors would require a command adapter.
+
+### 1. Copy the edge runtime from your computer
+
+Open a terminal at the root of your local `nano-system-one` checkout. Replace the example SSH destination with the account and address you normally use for your duck. The board needs Python **3.11 or newer**, a C compiler, and read/connect access to its service sockets. The trained scores are already in `edge/scores.inc`; the Python adapter uses the standard library.
+
+```sh
+DUCK=microduck@192.168.1.42
+ssh "$DUCK" 'mkdir -p ~/nano-system-one'
+scp -r edge "$DUCK:nano-system-one/"
+ssh "$DUCK"
+```
+
+### 2. Build and check one decision on the duck
+
+Run the remaining commands **in the robot's SSH shell**:
+
+```sh
+cd ~/nano-system-one
+python3 --version
+cc -std=c99 -Os -shared -fPIC edge/scorer.c -o libnso.so
+PYTHONPATH=edge python3 - <<'PY'
+from pathlib import Path
+from choice import ChoiceScorer
+model = ChoiceScorer(Path("libnso.so"))
+print(model.decide([2, 2, 2, 2, 1, 1], 7))
+PY
+```
+
+Look for `'status': 'choice'` and `'selected': 'wait'`. This checks the actual library, model table and Python binding on your board, before the camera or robot services enter the picture. If `cc` is missing, install a C toolchain suitable for the board image or build the shared library with a matching AArch64 Linux toolchain and copy it to the same directory.
+
+### 3. Record a ball-tracking session
+
+Use the duck's usual autonomous ball-play mode. The scorer becomes eligible when the robot reports both autonomy and autonomous soccer, a supported controller phase, and a walking or standing policy. The operator guide describes how to check or change these modes. [MicroDuck operator guide](https://github.com/pollen-robotics/microduck/blob/main/docs/robot/cheatsheet.md)
+
+```sh
+ROBOT_SOCKET=/run/robotd.sock
+MEDIA_SOCKET=/run/mediad/media.sock
+ls -l "$ROBOT_SOCKET" "$MEDIA_SOCKET"
+printf '{}\n' > detector-defaults.json
+TRACE="microduck-$(date +%Y%m%d-%H%M%S).jsonl"
+python3 edge/robot_trace.py --library ./libnso.so capture \
+  --robot-socket "$ROBOT_SOCKET" --media-socket "$MEDIA_SOCKET" \
+  --detector detector-defaults.json > "$TRACE"
+```
+
+The empty detector configuration requests the firmware defaults. If your detector is tuned, use its settings for comparable results. Let the duck see the ball, briefly hide it, then show it again. Stop recording with **Ctrl-C**. The shell redirects output to the trace, so a quiet terminal during capture is expected.
+
+### 4. Verify and inspect the trace
+
+```sh
+python3 edge/robot_trace.py --library ./libnso.so replay "$TRACE"
+python3 - "$TRACE" <<'PY'
+import json, sys
+from collections import Counter
+
+reasons = Counter()
+with open(sys.argv[1]) as trace:
+    for line in trace:
+        row = json.loads(line)
+        decision = row["decision"]
+        if decision["status"] == "choice":
+            print("Model proposal:", decision, "\nController phase:", row["phase"])
+            break
+        reasons[decision["reason"]] += 1
+    else:
+        print("No eligible choice in this session. Deferrals:", dict(reasons))
+PY
+```
+
+A successful first session has **rows greater than zero, zero replay mismatches, and at least one choice**. A trace containing only deferrals can also replay perfectly. `warmup` means the adapter is collecting six consecutive samples. For `missing_observation`, check the detector stream; for `operator_override` or `ineligible_controller`, check the pad and reported operating mode. A valid frame showing no ball counts as a valid observation.
+
+If capture reports a missing socket, check `systemctl status robotd mediad` and inspect listening Unix sockets with `ss -xl`. Update the two path variables for your firmware. For a permission error, check your SSH account's access to both sockets. [Upstream socket configuration](https://github.com/pollen-robotics/microduck/blob/main/deploy/robotd.toml) · [Capture and replay contract](docs/ooda-field-validation.md)
+
 ## What comes out of the model?
 
 The first output type is **Choice**. MicroDuck defines three identifiers in a fixed order: `track`, `search`, `wait`. The trained Transformer supplies one logit per identifier. The native selector applies the caller's admissibility mask and returns the highest-scoring allowed identifier. When a decision cannot be issued, the caller gets `NSO_DEFER`. A valid choice can still be wrong for the situation; episode replay evaluates that separate question.
