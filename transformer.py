@@ -1,4 +1,4 @@
-"""Lesson 1: trace a Transformer encoder from robot observations to choice logits."""
+"""Reference temporal encoder for scoring admissible MicroDuck behaviors."""
 
 import numpy as np
 

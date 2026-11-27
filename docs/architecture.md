@@ -36,4 +36,4 @@ No device benchmarks, trained deployment weights or RKNN artifact are available 
 
 ## Temporal encoder experiment
 
-[Lesson 1](lesson-01.md) introduces a one-block Transformer over an observation window and the admissible behaviors. Each option reads the shared history with its own query. The encoder is an offline forward-pass prototype. Its value over the MLP is an empirical question for episode replay.
+The [encoder design record](encoder-design.md) documents the attention mask, candidate representation, and costs of processing an observation window. A one-block Transformer implements this design for offline evaluation. Episode replay will determine whether using the sequence improves behavior selection over the MLP baseline.
