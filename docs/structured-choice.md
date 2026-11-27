@@ -4,42 +4,48 @@ MicroDuck sees its ball four times, then receives two valid misses. This record 
 
 ## Build the nine input rows
 
-The history $(2,2,2,2,1,1)$ runs oldest to newest. Features encode (visible, valid): a sighting is $(1,1)$, a valid miss $(0,1)$, and a missing frame $(0,0)$. A valid miss is evidence about the scene; a missing frame describes the sensor stream. For observation $x_t$ and behavior descriptor $c_i$:
+The history `(2,2,2,2,1,1)` runs oldest to newest. Features encode (visible, valid): a sighting is `(1,1)`, a valid miss `(0,1)`, and a missing frame `(0,0)`. A valid miss is evidence about the scene; a missing frame describes the sensor stream. For observation `x[t]` and behavior descriptor `c[i]`:
 
-$$
-u_t=x_tW_{\rm obs}+e_{5-t},\qquad v_i=c_iW_{\rm opt}.
-$$
+```text
+u[t] = x[t] @ W_obs + age[5 − t]
+v[i] = c[i] @ W_opt
+```
 
-Both projections map two features to width 16. The learned age vector $e_0$ identifies the newest observation. Track, search and wait use descriptors $(1,0),(0,1),(0,0)$. Six observations and three candidates form $X$ of shape $9\times16$. Age applies only to observations. Candidate identity comes from its descriptor. [Implementation](../transformer.py)
+Here `@` denotes matrix multiplication. Both projections map two features to width 16. The learned age vector `age[0]` identifies the newest observation. Track, search and wait use descriptors `(1,0),(0,1),(0,0)`. Six observations and three candidates form `X` of shape `9 × 16`. Age applies only to observations. Candidate identity comes from its descriptor. [Implementation](../transformer.py)
 
 ## Retrieve evidence for each behavior
 
 Each of two heads projects normalized rows into queries, keys and values of width eight:
 
-$$
-[Q_h,K_h,V_h]={\rm LN}(X)W_h,\quad
-A_h={\rm softmax}_{\rm row}(Q_hK_h^\top/\sqrt{8}+M),\quad H_h=A_hV_h .
-$$
+```text
+Q, K, V = split(LN(X) @ W_head)
+scores  = (Q @ transpose(K)) / sqrt(8)
+A       = row_softmax(scores + M)
+H       = A @ V
+```
 
-Layer normalization centers and rescales each row across its 16 features. A candidate query describes the evidence it seeks. Keys determine match strength; values supply the information retrieved. Dividing by the square root of head width controls the scale of the dot products. The attention mask $M$ adds zero on readable connections and negative infinity elsewhere. Every row may read the six observations; each candidate may also read itself. The tracking row of each $9\times9$ attention matrix therefore distributes unit mass over seven positions. Those weights explain mixing. Testing the influence of a particular missed sighting requires changing that input and repeating the forward pass.
+`LN` denotes layer normalization. Each head computes its own `Q`, `K`, `V` and `H`. Layer normalization centers and rescales each row across its 16 features. A candidate query describes the evidence it seeks. Keys determine match strength; values supply the information retrieved. Dividing by the square root of head width controls the scale of the dot products. The attention mask `M` adds zero on readable connections and negative infinity elsewhere. Every row may read the six observations; each candidate may also read itself. The tracking row of each `9 × 9` attention matrix therefore distributes unit mass over seven positions. Those weights explain mixing. Testing the influence of a particular missed sighting requires changing that input and repeating the forward pass.
 
 Concatenate the two heads, mix them and apply a feed-forward network independently to each row:
 
-$$
-Y=X+[H_1\,|\,H_2]W_O,\qquad U=Y+{\rm ReLU}({\rm LN}(Y)W_1)W_2.
-$$
+```text
+Y = X + concat(H1, H2) @ W_out
+U = Y + ReLU(LN(Y) @ W1) @ W2
+```
 
-The feed-forward dimensions are $16\to64\to16$. The residual additions preserve a path for the incoming representation. The same learned vector $w$ scores each final candidate row: $z_i={\rm LN}(U_i)w$. One forward pass produces all three logits. Candidate isolation and the shared readout preserve each candidate's raw score when the available set changes.
+The feed-forward dimensions are `16 → 64 → 16`. The residual additions preserve a path for the incoming representation. The same learned vector `w` scores each final candidate row: `z[i] = LN(U[i]) @ w`. One forward pass produces all three logits. Candidate isolation and the shared readout preserve each candidate's raw score when the available set changes.
 
 ## Where System One gets its output type
 
-The application declares a vocabulary and binds its identifiers to candidate descriptors. The controller supplies an admissible set $S$. This second mask acts **after** the Transformer. For a usable observation and nonempty $S$, the C selector returns the identifier with the largest allowed score. Equal scores use enum order.
+The application declares a vocabulary and binds its identifiers to candidate descriptors. The controller supplies an admissible set `S`. This second mask acts **after** the Transformer. For a usable observation and nonempty `S`, the C selector returns the identifier with the largest allowed score. Equal scores use enum order.
 
-$$
-i^*=\arg\max_{i\in S} z_i,\qquad p_i=\frac{\exp(z_i)}{\sum_{j\in S}\exp(z_j)}\quad(i\in S).
-$$
+```text
+selected = candidate in S with the largest z[i]
+weight[i] = exp(z[i])                    (i in S)
+p[i] = weight[i] / sum(weight[j] for j in S)
+```
 
-Disallowed candidates receive zero probability. The C selector needs only the argmax. During training, when the annotation accepts a set $G$ of behaviors, the loss is $\mathcal L=-\log\sum_{i\in G}p_i$. A single acceptable label gives ordinary cross-entropy. Multiple labels allow a transition window when waiting and searching both make sense. The normalized probability is conditional on the options; measuring field correctness and calibration requires representative episodes. [Training objective](../train.py) · [Native selector](../edge/scorer.c)
+Disallowed candidates receive zero probability. The C selector needs only the argmax. During training, when the annotation accepts a set `G` of behaviors, the loss is `loss = −log(sum(p[i] for i in G))`. A single acceptable label gives ordinary cross-entropy. Multiple labels allow a transition window when waiting and searching both make sense. The normalized probability is conditional on the options; measuring field correctness and calibration requires representative episodes. [Training objective](../train.py) · [Native selector](../edge/scorer.c)
 
 ## One window, three outcomes
 
@@ -67,6 +73,6 @@ The three named scores let the reader see that the top unconstrained candidate w
 
 ## Why the trained model fits on the robot
 
-There are $3^6=729$ discrete histories. Exporting three float32 logits per history requires $729\times3\times4=8748$ bytes. Training learns the scores; the exporter enumerates the inputs; the robot looks up a row and selects an allowed behavior. A continuous sensor input or a change of vocabulary would change that trade-off.
+There are `3⁶ = 729` discrete histories. Exporting three float32 logits per history requires `729 × 3 × 4 = 8,748` bytes. Training learns the scores; the exporter enumerates the inputs; the robot looks up a row and selects an allowed behavior. A continuous sensor input or a change of vocabulary would change that trade-off.
 
 When investigating a proposal, check the observation history, model identifier, allowed set and score ordering, then inspect the observed incumbent action and subsequent measurements. Version 2 replay recomputes the full decision object. Older traces support comparison of the original proposal and timing fields. [Replay](../edge/robot_trace.py) · [Deployment and limits](edge-training.md)
