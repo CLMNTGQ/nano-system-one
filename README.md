@@ -6,7 +6,7 @@ nano-system-one is a from-scratch experiment in **structured decision output on 
 
 ## Current use case · Follow one person
 
-MicroDuck should follow one participant who walks away, hold position within a chosen distance band and stop when the target is lost. The new `person-follow-v1` prototype reads a short history of detected person boxes and proposes **follow**, **hold_distance** or **stop**. The controller owns motion. The first release supports observation and replay.
+MicroDuck should follow one participant who walks away, hold position within a chosen distance band and stop when the target is lost. The new `person-follow-v1` prototype reads a short history of detected person boxes and proposes **follow**, **hold_distance** or **stop**. The controller owns motion. The active runtime feeds accepted choices to the stock MicroDuck motion service and uses the next camera frame to correct heading and approach speed. Shadow capture and offline replay are also available.
 
 **Run a decision trace** from the repository root with Python 3 and NumPy:
 
@@ -16,6 +16,14 @@ python3 -m person_follow person_follow/example.jsonl --model person_follow/check
 ```
 
 The example and trained weights come from synthetic episodes. On 20 held-out synthetic episodes, agreement on eligible windows was 93.2% for the rule, 95.3% for the MLP and 96.4% for the Transformer. The Transformer issued fewer unwanted forward proposals but switched between follow and hold more often. Physical target tracking, distance calibration and on-board timing await the first robot trial.
+
+**Run active following on the robot** from the repository root with the robot standing, the head facing forward and built-in autonomy, laser and soccer modes off:
+
+```sh
+python3 -m person_follow.active
+```
+
+This command can move the robot. It uses the included Transformer, the local camera, the forward depth sensor and the existing walking policy. Ctrl-C ends the session. The active loop has passed simulated feedback tests; the first physical trial is pending. [Setup, ownership and active trial procedure](docs/person-follow.md#run-the-active-loop)
 
 [Capture your first MicroDuck person-follow session, inspect the math and reproduce training](docs/person-follow.md) · [Test results](person_follow/checkpoints/results.json)
 

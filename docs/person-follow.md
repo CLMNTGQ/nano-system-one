@@ -9,9 +9,25 @@ The first trial starts with one consenting participant in view. They walk away, 
 | Observe | OpenCV's built-in upright-person HOG detector reads recorded constant-frame-rate video or grayscale luminance from MicroDuck's local UYVY camera socket. Its sigmoid-transformed SVM margin is an uncalibrated quality indicator. |
 | Orient | Require one candidate, reject large horizontal jumps between recent boxes, and normalize the box using upright image dimensions. Box height is a proximity proxy. Posture and camera pitch can both change it. After a loss, six consecutive valid samples are needed again. Identity persistence across people is outside the single-person trial. |
 | Decide | Replay six ordered samples with either the hysteresis rule, the MLP or a one-block Transformer. Produce a structured choice with a reason and an admissibility mask. |
-| Act | Shadow output only. A future controller must accept a fresh proposal before issuing a bounded motion intent. It owns obstacle checks, manual priority, motion expiration and cancellation on disconnect. |
+| Act | The active client converts each fresh accepted choice to bounded forward and yaw velocities, checks forward depth and robot state, and renews the motion intent using fresh feedback. |
 
-The upstream protocol exposes camera frames via local `media.frame`, a JSON header followed by raw bytes. The future controller can investigate `robot.move` and `robot.stop` once ownership and expiration have been validated on the installed firmware. An absent observation stream needs an independent controller watchdog: the replay function only runs when a row arrives. [Pollen IPC protocol](https://github.com/pollen-robotics/microduck/blob/main/duck-ipc-proto/src/lib.rs)
+The upstream protocol exposes camera frames via local `media.frame`, a JSON header followed by raw bytes. The client identifies its command connection with `hello`, subscribes to `robot.state` and `tof.frame`, and sends `robot.move` notifications. A zero twist releases active motion. The independent control tick continues even if the camera stalls. [Pollen IPC protocol](https://github.com/pollen-robotics/microduck/blob/main/duck-ipc-proto/src/lib.rs)
+
+## Run the active loop
+
+Copy the `person_follow/` directory, including `checkpoints/`, to the duck. Run from the directory containing it with Python 3, NumPy and OpenCV with HOG support. Check that camera capture yields reliable boxes first. Start the stock walking policy in a standing posture with the head centered. Use a level, open area and one participant. Switch off native autonomy, soccer and laser tracking. The client uses local read access to mediad and tofd and command access to robotd (API v60 or later).
+
+```sh
+python3 -m person_follow.active > follow-trial.jsonl
+```
+
+The first six consecutive valid observations warm up the model. Walk away, pause, step slightly to one side and leave the frame. Inspect `decision.selected`, `control`, `twist` and the subsequently reported `move.applied` in the trace. The requested twist and the robot's telemetry may differ. Measure distance and actual stopping time during this trial. Press Ctrl-C to end it. To use custom firmware paths see `python3 -m person_follow.active --help`.
+
+**Feedback law.** Left/right image error controls signed yaw up to 0.35 rad/s. A target right of center requests negative yaw in robotd's trunk frame. While following, forward speed decreases as the box approaches half the image height and is capped at 0.10 m/s. Large lateral errors trigger turning in place. Holding distance suspends forward motion and can continue centering. Actual distance depends on the person and camera pose; this version uses apparent size.
+
+**Motion and handover.** A 20 Hz timer checks inputs independently of the camera process. Motion requires robot state within 250 ms, depth within 350 ms and a camera observation within 500 ms of exposure. The 4×4 central depth cells must all report a valid return at least 400 mm away. Unknown returns can keep the robot stationary. This local clearance check covers the forward sensor corridor; it cannot detect drop-offs or all side obstacles. The head must face forward. Motion expires on target loss or camera silence. With fresh robot state the client sends zero; after loss of the command link or robot telemetry the daemon's configured deadman bounds continued motion.
+
+The upstream twist slot is shared and uses the latest writer. A fresh state reporting another live driver (including a pad) ends the session; restart explicitly to follow again. The client never renews a nonzero command twice from the same state sample. Ownership is observed through telemetry and has a race between a state sample and a command. Use a single active movement producer for the trial; an atomic command-priority guarantee would require firmware support.
 
 ## Capture and inspect the first physical episode
 
@@ -33,7 +49,7 @@ Each JSONL file is one episode. A row carries `version`, increasing `t` in secon
 
 | Output | Meaning |
 |---|---|
-| follow | Propose approach. The future motion controller will decide heading and speed. |
+| follow | Approach using box height error for forward speed and horizontal offset for yaw. |
 | hold_distance | Keep tracking the target while suspending forward motion. |
 | stop | Request cancellation of follow motion. |
 | defer | Return no proposal, for example on a recorded manual override. The controller owns the handover. |
@@ -67,4 +83,4 @@ To train on real traces, label the acceptable decision at each reviewed timestam
 {"split":"train","session":"walk-01","person":"p01","site":"room-a","path":"walk-01.jsonl"}
 ```
 
-Wrap entries in a JSON array and populate all three splits (`train`, `val`, `test`). The loader rejects reuse of a session, person or site across splits. Run `python3 -m person_follow.train --manifest manifest.json --out real-run`. Keep the test episodes for final comparison. In active trials, add external distance measurements, time in the desired band, loss-to-physical-stop latency and operator intervention counts. Release an active mode only after reviewing actual captures, measuring board load and verifying controller arbitration.
+Wrap entries in a JSON array and populate all three splits (`train`, `val`, `test`). The loader rejects reuse of a session, person or site across splits. Run `python3 -m person_follow.train --manifest manifest.json --out real-run`. Keep the test episodes for final comparison. In active trials, add external distance measurements, time in the desired band, loss-to-physical-stop latency and operator intervention counts. Record board load and controller arbitration during the first supervised active trials.
