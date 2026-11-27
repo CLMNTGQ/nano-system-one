@@ -25,17 +25,28 @@ class Observer:
         self.frames = deque(maxlen=6)
         self.previous = None
         self.owner = None
+        self.last_valid = self.last_positive = None
 
     def step(self, row):
         identity = (row["session"], row["eligible"], row["source"])
         if self.owner != identity or self.previous != row["tick"] - 1:
             self.frames.clear()
+            self.last_valid = self.last_positive = None
+        if row["symbol"]:
+            self.last_valid = row["detector_rx_ns"]
+            if row["symbol"] == 2:
+                self.last_positive = self.last_valid
         self.previous, self.owner = row["tick"], identity
         self.frames.append(row["symbol"])
         if len(self.frames) < 6 or not row["eligible"]:
             return "defer"
         choice = self.select((ct.c_uint8 * 6)(*self.frames), row["mask"], 1, None)
         return "defer" if choice < 0 else NAMES[choice]
+
+
+    def timing(self, now):
+        return {"valid_age_ms": None if self.last_valid is None else (now-self.last_valid)/1e6,
+                "positive_age_ms": None if self.last_positive is None else (now-self.last_positive)/1e6}
 
 
 async def subscribe(path, method, params, event, latest, key):
@@ -90,6 +101,7 @@ async def capture(args):
                        walk=soccer.get("walk",False), source=source, eligible=eligible,
                        mask=7 if eligible else 0, missed=(state.get("loop") or {}).get("missed"))
             row["proposal"] = observer.step(row)
+            row.update(observer.timing(now))
             row["complete_ns"] = time.monotonic_ns()
             print(json.dumps(row), flush=True)
 
@@ -103,7 +115,10 @@ def replay(args):
         for line in stream:
             row = json.loads(line)
             count += 1
-            mismatches += observer.step(row) != row["proposal"]
+            proposal = observer.step(row)
+            timing = observer.timing(row["decision_ns"])
+            mismatches += proposal != row["proposal"] or any(
+                key in row and row[key] != value for key, value in timing.items())
             if row["symbol"] and row["detector_rx_ns"] is not None:
                 ages.append((row["complete_ns"] - row["detector_rx_ns"]) / 1e6)
             processing.append((row["complete_ns"] - row["decision_ns"]) / 1e6)

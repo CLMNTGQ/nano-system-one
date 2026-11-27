@@ -33,3 +33,21 @@ jobs:
           for split in ("development", "holdout"):
               assert actual[split] == expected[split]
           PY
+      - name: Reproduce timing ablation and verify the float32 export
+        run: |
+          node experiments/timing-ablation.mjs /tmp/timing
+          python - <<'PY'
+          import json, struct
+          from pathlib import Path
+          from array import array
+          data = Path("/tmp/timing/B.f32le").read_bytes()
+          assert len(data) == 8748
+          ref = Path("experiments/exports/B-scores.inc").read_text().replace("{","").replace("}","").replace("f","")
+          values = [float(s) for s in ref.split(",") if s.strip()]
+          actual = struct.unpack("<2187f", data)
+          assert len(values) == len(actual)
+          assert max(abs(a-b) for a,b in zip(actual,values)) < 1e-4
+          expected = json.loads(Path("reports/timing-ablation.json").read_text())
+          report = json.loads(Path("/tmp/timing/timing-ablation.json").read_text())
+          assert report["detail"] == expected["detail"]
+          PY

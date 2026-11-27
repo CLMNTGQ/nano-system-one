@@ -1,0 +1,4 @@
+{"id":"short-loss","frames":[2,2,2,2,2,2,1,1,1,1],"receive_age_ms":[40,40,40,40,40,40,40,40,40,40],"labels":["track","wait","wait","wait|search","search"]}
+{"id":"stale-positive","frames":[1,1,1,1,1,1,2,0,1,1],"receive_age_ms":[20,20,20,20,20,20,180,null,175,180],"labels":["search","wait|search","defer","search","search"]}
+{"id":"recover","frames":[2,2,2,2,2,2,0,0,0,1,1,2],"receive_age_ms":[15,15,15,15,15,15,null,null,null,10,10,10],"labels":["track","defer","defer","defer","wait","wait|search","wait|track"]}
+{"id":"recent-confirmation","frames":[2,2,2,2,2,2,1,2,2],"receive_age_ms":[10,10,10,10,10,10,10,10,10],"labels":["track","wait","track","track"]}

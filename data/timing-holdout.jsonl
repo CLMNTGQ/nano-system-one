@@ -1,0 +1,5 @@
+{"id":"valid-misses","frames":[2,2,2,2,2,2,1,1,1,1,2,2],"receive_age_ms":[20,50,20,40,30,10,30,20,10,45,5,15],"labels":["track","wait","wait","wait|search","search","wait|search","track"]}
+{"id":"missing-look","frames":[2,2,2,2,2,2,0,0,0,1,2,2],"receive_age_ms":[20,50,20,40,30,10,null,null,null,45,5,15],"labels":["track","defer","defer","defer","wait","wait|track","track"]}
+{"id":"earlier-last-look","frames":[2,2,2,2,2,2,1,1,1],"receive_age_ms":[40,30,35,50,25,180,20,40,20],"labels":["track","wait","wait|search","search"]}
+{"id":"later-last-look","frames":[2,2,2,2,2,2,1,1,1],"receive_age_ms":[40,30,35,50,25,5,20,40,20],"labels":["track","wait","wait","wait"]}
+{"id":"isolated-return","frames":[1,1,1,1,1,1,2,1,2,1,2,2],"receive_age_ms":[20,20,20,20,20,20,170,10,150,25,10,15],"labels":["search","wait|search","search","wait|search","search","wait|search","track"]}

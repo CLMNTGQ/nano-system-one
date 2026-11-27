@@ -42,3 +42,7 @@ The [training and deployment record](docs/edge-training.md) describes the synthe
 ## Field validation
 
 [Transition criteria, contextual replay results and live OODA capture](docs/ooda-field-validation.md) · [Paired decision traces](reports/context-replay.json). The live subscriber and closed-loop analysis await measurements from a physical robot.
+
+## Timing and architecture ablation
+
+[Matched architecture comparison and field gates](docs/timing-ablation.md) · [Held-out timing episodes](data/timing-holdout.jsonl) · [Decision-level results](reports/timing-ablation.json).

@@ -1,0 +1,586 @@
+{
+  "ticks": 29,
+  "counts": {
+    "timed_mlp": 24,
+    "A": 25,
+    "A_time": 25,
+    "B": 23,
+    "B_time": 23,
+    "production": 23,
+    "production_time": 23,
+    "timed_rule": 24
+  },
+  "coefficients": {
+    "A": [
+      [
+        0.2665801475337484,
+        -0.01181235215322924,
+        -0.05936547888938401,
+        -0.000014811735926545158,
+        0
+      ],
+      [
+        0.28546288602916475,
+        0.3570696461213747,
+        -0.2270645637315882,
+        0.04222893551484369,
+        0
+      ],
+      [
+        -0.5520430335629141,
+        -0.3452572939681455,
+        0.2864300426209717,
+        -0.0422141237789172,
+        0
+      ]
+    ],
+    "B": [
+      [
+        0.012265412372501484,
+        -0.00011387770942526256,
+        -0.0009818069043428259,
+        -0.00013425450508480275,
+        0
+      ],
+      [
+        0.012084809051362737,
+        0.3179681693699064,
+        -0.4399725954142584,
+        0.004031768324150736,
+        0
+      ],
+      [
+        -0.024350221423864206,
+        -0.3178542916604818,
+        0.4409544023186014,
+        -0.0038975138190659327,
+        0
+      ]
+    ],
+    "production": [
+      [
+        -0.013377563149210764,
+        -0.002621656442017087,
+        -0.008100584876456504,
+        -0.00001546104609198459,
+        0
+      ],
+      [
+        0.015173675705754133,
+        0.31740474522079976,
+        -0.4345512365994288,
+        0.00568027809505925,
+        0
+      ],
+      [
+        -0.0017961125565434434,
+        -0.314783088778783,
+        0.4426518214758849,
+        -0.005664817048967242,
+        0
+      ]
+    ]
+  },
+  "detail": [
+    {
+      "session": "valid-misses",
+      "tick": 5,
+      "accepted": [
+        "track"
+      ],
+      "predictions": {
+        "timed_mlp": "track",
+        "A": "track",
+        "A_time": "track",
+        "B": "track",
+        "B_time": "track",
+        "production": "track",
+        "production_time": "track",
+        "timed_rule": "track"
+      }
+    },
+    {
+      "session": "valid-misses",
+      "tick": 6,
+      "accepted": [
+        "wait"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "wait",
+        "B_time": "wait",
+        "production": "wait",
+        "production_time": "wait",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "valid-misses",
+      "tick": 7,
+      "accepted": [
+        "wait"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "wait",
+        "B_time": "wait",
+        "production": "wait",
+        "production_time": "wait",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "valid-misses",
+      "tick": 8,
+      "accepted": [
+        "wait",
+        "search"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "search",
+        "A_time": "search",
+        "B": "search",
+        "B_time": "search",
+        "production": "search",
+        "production_time": "search",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "valid-misses",
+      "tick": 9,
+      "accepted": [
+        "search"
+      ],
+      "predictions": {
+        "timed_mlp": "search",
+        "A": "search",
+        "A_time": "search",
+        "B": "search",
+        "B_time": "search",
+        "production": "search",
+        "production_time": "search",
+        "timed_rule": "search"
+      }
+    },
+    {
+      "session": "valid-misses",
+      "tick": 10,
+      "accepted": [
+        "wait",
+        "search"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "wait",
+        "B_time": "wait",
+        "production": "wait",
+        "production_time": "wait",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "valid-misses",
+      "tick": 11,
+      "accepted": [
+        "track"
+      ],
+      "predictions": {
+        "timed_mlp": "track",
+        "A": "track",
+        "A_time": "track",
+        "B": "track",
+        "B_time": "track",
+        "production": "track",
+        "production_time": "track",
+        "timed_rule": "track"
+      }
+    },
+    {
+      "session": "missing-look",
+      "tick": 5,
+      "accepted": [
+        "track"
+      ],
+      "predictions": {
+        "timed_mlp": "track",
+        "A": "track",
+        "A_time": "track",
+        "B": "track",
+        "B_time": "track",
+        "production": "track",
+        "production_time": "track",
+        "timed_rule": "track"
+      }
+    },
+    {
+      "session": "missing-look",
+      "tick": 6,
+      "accepted": [
+        "defer"
+      ],
+      "predictions": {
+        "timed_mlp": "defer",
+        "A": "defer",
+        "A_time": "defer",
+        "B": "defer",
+        "B_time": "defer",
+        "production": "defer",
+        "production_time": "defer",
+        "timed_rule": "defer"
+      }
+    },
+    {
+      "session": "missing-look",
+      "tick": 7,
+      "accepted": [
+        "defer"
+      ],
+      "predictions": {
+        "timed_mlp": "defer",
+        "A": "defer",
+        "A_time": "defer",
+        "B": "defer",
+        "B_time": "defer",
+        "production": "defer",
+        "production_time": "defer",
+        "timed_rule": "defer"
+      }
+    },
+    {
+      "session": "missing-look",
+      "tick": 8,
+      "accepted": [
+        "defer"
+      ],
+      "predictions": {
+        "timed_mlp": "defer",
+        "A": "defer",
+        "A_time": "defer",
+        "B": "defer",
+        "B_time": "defer",
+        "production": "defer",
+        "production_time": "defer",
+        "timed_rule": "defer"
+      }
+    },
+    {
+      "session": "missing-look",
+      "tick": 9,
+      "accepted": [
+        "wait"
+      ],
+      "predictions": {
+        "timed_mlp": "search",
+        "A": "search",
+        "A_time": "search",
+        "B": "search",
+        "B_time": "search",
+        "production": "search",
+        "production_time": "search",
+        "timed_rule": "search"
+      }
+    },
+    {
+      "session": "missing-look",
+      "tick": 10,
+      "accepted": [
+        "wait",
+        "track"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "wait",
+        "B_time": "wait",
+        "production": "wait",
+        "production_time": "wait",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "missing-look",
+      "tick": 11,
+      "accepted": [
+        "track"
+      ],
+      "predictions": {
+        "timed_mlp": "track",
+        "A": "track",
+        "A_time": "track",
+        "B": "track",
+        "B_time": "track",
+        "production": "track",
+        "production_time": "track",
+        "timed_rule": "track"
+      }
+    },
+    {
+      "session": "earlier-last-look",
+      "tick": 5,
+      "accepted": [
+        "track"
+      ],
+      "predictions": {
+        "timed_mlp": "track",
+        "A": "track",
+        "A_time": "track",
+        "B": "track",
+        "B_time": "track",
+        "production": "track",
+        "production_time": "track",
+        "timed_rule": "track"
+      }
+    },
+    {
+      "session": "earlier-last-look",
+      "tick": 6,
+      "accepted": [
+        "wait"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "wait",
+        "B_time": "wait",
+        "production": "wait",
+        "production_time": "wait",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "earlier-last-look",
+      "tick": 7,
+      "accepted": [
+        "wait",
+        "search"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "wait",
+        "B_time": "wait",
+        "production": "wait",
+        "production_time": "wait",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "earlier-last-look",
+      "tick": 8,
+      "accepted": [
+        "search"
+      ],
+      "predictions": {
+        "timed_mlp": "search",
+        "A": "search",
+        "A_time": "search",
+        "B": "search",
+        "B_time": "search",
+        "production": "search",
+        "production_time": "search",
+        "timed_rule": "search"
+      }
+    },
+    {
+      "session": "later-last-look",
+      "tick": 5,
+      "accepted": [
+        "track"
+      ],
+      "predictions": {
+        "timed_mlp": "track",
+        "A": "track",
+        "A_time": "track",
+        "B": "track",
+        "B_time": "track",
+        "production": "track",
+        "production_time": "track",
+        "timed_rule": "track"
+      }
+    },
+    {
+      "session": "later-last-look",
+      "tick": 6,
+      "accepted": [
+        "wait"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "wait",
+        "B_time": "wait",
+        "production": "wait",
+        "production_time": "wait",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "later-last-look",
+      "tick": 7,
+      "accepted": [
+        "wait"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "wait",
+        "B_time": "wait",
+        "production": "wait",
+        "production_time": "wait",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "later-last-look",
+      "tick": 8,
+      "accepted": [
+        "wait"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "search",
+        "A_time": "search",
+        "B": "search",
+        "B_time": "search",
+        "production": "search",
+        "production_time": "search",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "isolated-return",
+      "tick": 5,
+      "accepted": [
+        "search"
+      ],
+      "predictions": {
+        "timed_mlp": "search",
+        "A": "search",
+        "A_time": "search",
+        "B": "search",
+        "B_time": "search",
+        "production": "search",
+        "production_time": "search",
+        "timed_rule": "search"
+      }
+    },
+    {
+      "session": "isolated-return",
+      "tick": 6,
+      "accepted": [
+        "wait",
+        "search"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "wait",
+        "B_time": "wait",
+        "production": "wait",
+        "production_time": "wait",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "isolated-return",
+      "tick": 7,
+      "accepted": [
+        "search"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "wait",
+        "B_time": "wait",
+        "production": "wait",
+        "production_time": "wait",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "isolated-return",
+      "tick": 8,
+      "accepted": [
+        "wait",
+        "search"
+      ],
+      "predictions": {
+        "timed_mlp": "track",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "track",
+        "B_time": "track",
+        "production": "track",
+        "production_time": "track",
+        "timed_rule": "track"
+      }
+    },
+    {
+      "session": "isolated-return",
+      "tick": 9,
+      "accepted": [
+        "search"
+      ],
+      "predictions": {
+        "timed_mlp": "wait",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "wait",
+        "B_time": "wait",
+        "production": "wait",
+        "production_time": "wait",
+        "timed_rule": "wait"
+      }
+    },
+    {
+      "session": "isolated-return",
+      "tick": 10,
+      "accepted": [
+        "wait",
+        "search"
+      ],
+      "predictions": {
+        "timed_mlp": "track",
+        "A": "wait",
+        "A_time": "wait",
+        "B": "track",
+        "B_time": "track",
+        "production": "track",
+        "production_time": "track",
+        "timed_rule": "track"
+      }
+    },
+    {
+      "session": "isolated-return",
+      "tick": 11,
+      "accepted": [
+        "track"
+      ],
+      "predictions": {
+        "timed_mlp": "track",
+        "A": "track",
+        "A_time": "track",
+        "B": "track",
+        "B_time": "track",
+        "production": "track",
+        "production_time": "track",
+        "timed_rule": "track"
+      }
+    }
+  ]
+}
