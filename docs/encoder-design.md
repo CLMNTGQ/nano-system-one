@@ -22,6 +22,8 @@ TypeSafe's Jev inspired the interface: an application declares the question and 
 
 The encoder uses scaled dot-product attention, residual connections, normalization, and a position-wise feed-forward network. [Vaswani et al., *Attention Is All You Need*](https://arxiv.org/abs/1706.03762)
 
+For the deployed six-tick configuration, see the [equations and worked structured choice](structured-choice.md).
+
 ## Inspectable forward pass
 
 For four observations and three candidate behaviors, the input sequence has seven rows of width 16. Observation rows may read the whole history. Each behavior row may read the history and itself. Each head therefore produces a 7 by 7 attention matrix, with prohibited entries set to zero after softmax. The two heads return eight features each. The shared readout projects the three final behavior vectors onto three logits. A softmax across admissible behaviors gives their relative probabilities.

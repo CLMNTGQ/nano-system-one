@@ -5,7 +5,7 @@ on:
       - 'edge/**'
       - 'experiments/**'
       - 'data/**'
-      - 'tests/trace_transport.py'
+      - 'tests/*.py'
       - '.github/workflows/field-validation.yml'
   workflow_dispatch:
 permissions:
@@ -23,6 +23,7 @@ jobs:
           node-version: '22'
       - run: |
           cc -std=c99 -Os -shared -fPIC edge/scorer.c -o /tmp/libnso.so
+          python tests/choice_contract.py /tmp/libnso.so
           python tests/trace_transport.py /tmp/libnso.so
           node experiments/context-replay.mjs > /tmp/context.json
           python - <<'PY'

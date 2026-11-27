@@ -4,6 +4,10 @@ static const float scores[729][NSO_CHOICES] = {
 #include "scores.inc"
 };
 
+const char *nso_model_id(void) {
+    return "choice-v1/726023a92444dc6267ebe816188e998e70cac459";
+}
+
 int nso_select(const uint8_t history[NSO_HISTORY], unsigned mask,
                int fresh_owned, float logits[NSO_CHOICES]) {
     if (!history || !fresh_owned || !mask || (mask & ~7u))

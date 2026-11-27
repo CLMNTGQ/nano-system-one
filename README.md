@@ -10,6 +10,10 @@ The first output type is **Choice**. MicroDuck defines three identifiers in a fi
 
 For example, after four sightings and two valid misses, the exported model scores `track` at −6.490, `search` at −6.331 and `wait` at 0.739 (rounded). With all three behaviors allowed, the C call returns `NSO_WAIT`. With the same history and an empty mask it returns `NSO_DEFER`. **Waiting is a behavior. Deferring returns control to the caller.** See the [output contract and native identifiers](docs/problem.md#decision-contract).
 
+## Understand the solution
+
+[Follow six sensor observations through the Transformer and its structured output](docs/structured-choice.md). This design record connects tensor shapes, attention, training loss and the controller mask to three different decisions on the same window.
+
 ## Design question
 
 When the ball disappears, does the sequence of detections and missed frames contain enough information to improve the choice between tracking, searching, and waiting? The project compares a small temporal Transformer with a 96-parameter MLP and a timeout rule. The deciding evidence will be behavior on held-out episodes and execution cost on the target device.
@@ -18,7 +22,7 @@ When the ball disappears, does the sequence of detections and missed frames cont
 |---|---|
 | [MLP baseline](model.py) | Manual SGD update and a three-snapshot fitting example |
 | [Temporal Transformer](transformer.py) | NumPy reference and a trained PyTorch encoder with shared candidate readout |
-| MicroDuck integration | Synthetic replay completed; native AArch64 scorer cross-compiled; physical integration pending |
+| MicroDuck integration | Read-only socket capture and versioned decision replay implemented; physical validation pending |
 
 ## Design documents
 

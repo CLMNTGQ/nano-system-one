@@ -1,7 +1,7 @@
 """Subscribe to robot state and detector results; record and replay read-only OODA traces."""
 import argparse
 import asyncio
-import ctypes as ct
+from choice import ChoiceScorer
 import json
 import math
 import sys
@@ -11,17 +11,13 @@ from collections import deque
 from pathlib import Path
 
 PERIOD = 200_000_000
-NAMES = ("track", "search", "wait")
 PHASES = {"approaching": "track", "lining up": "track", "searching": "search",
           "getting ready": "wait", "waiting for the policy": "wait"}
 
 
 class Observer:
     def __init__(self, library):
-        self.library = ct.CDLL(str(library.resolve()))
-        self.select = self.library.nso_select
-        self.select.argtypes = [ct.POINTER(ct.c_uint8), ct.c_uint, ct.c_int, ct.POINTER(ct.c_float)]
-        self.select.restype = ct.c_int
+        self.scorer = ChoiceScorer(library)
         self.frames = deque(maxlen=6)
         self.previous = None
         self.owner = None
@@ -38,10 +34,15 @@ class Observer:
                 self.last_positive = self.last_valid
         self.previous, self.owner = row["tick"], identity
         self.frames.append(row["symbol"])
-        if len(self.frames) < 6 or not row["eligible"]:
-            return "defer"
-        choice = self.select((ct.c_uint8 * 6)(*self.frames), row["mask"], 1, None)
-        return "defer" if choice < 0 else NAMES[choice]
+        blocked = None
+        if not row["eligible"]:
+            if row["source"] == "padd":
+                blocked = "operator_override"
+            elif not row.get("state_rx_ns") or row["decision_ns"] - row["state_rx_ns"] > PERIOD:
+                blocked = "stale_state"
+            else:
+                blocked = "ineligible_controller"
+        return self.scorer.decide(self.frames, row["mask"], blocked)
 
 
     def timing(self, now):
@@ -100,7 +101,9 @@ async def capture(args):
                        incumbent=PHASES.get(phase), head=soccer.get("head",False),
                        walk=soccer.get("walk",False), source=source, eligible=eligible,
                        mask=7 if eligible else 0, missed=(state.get("loop") or {}).get("missed"))
-            row["proposal"] = observer.step(row)
+            row["decision"] = observer.step(row)
+            row["trace_version"] = 2
+            row["proposal"] = row["decision"].get("selected", "defer")
             row.update(observer.timing(now))
             row["complete_ns"] = time.monotonic_ns()
             print(json.dumps(row), flush=True)
@@ -115,9 +118,13 @@ def replay(args):
         for line in stream:
             row = json.loads(line)
             count += 1
-            proposal = observer.step(row)
+            decision = observer.step(row)
+            proposal = decision.get("selected", "defer")
+            version = row.get("trace_version", 1)
+            if version not in (1, 2):
+                raise ValueError("Unsupported trace version")
             timing = observer.timing(row["decision_ns"])
-            mismatches += proposal != row["proposal"] or any(
+            mismatches += (version == 2 and decision != row.get("decision")) or proposal != row["proposal"] or any(
                 key in row and row[key] != value for key, value in timing.items())
             if row["symbol"] and row["detector_rx_ns"] is not None:
                 ages.append((row["complete_ns"] - row["detector_rx_ns"]) / 1e6)

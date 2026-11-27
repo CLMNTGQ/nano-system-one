@@ -59,10 +59,13 @@ async def main(library):
                 assert all(row["symbol"] == 1 for row in misses[-3:])
                 outage = await stage(0, "autod", 5)
                 assert all(row["symbol"] == 0 and row["proposal"] == "defer" for row in outage[-3:])
+                assert outage[-1]["decision"]["reason"] == "missing_observation"
+                assert "logits" not in outage[-1]["decision"]
                 assert outage[-1]["valid_age_ms"] > misses[-1]["valid_age_ms"]
                 returned = await stage(2, "autod", 7)
                 assert returned[-1]["proposal"] == "track"
                 pad = await stage(2, "padd", 3)
+                assert pad[-1]["decision"]["reason"] == "operator_override"
                 assert pad[-1]["proposal"] == "defer" and not pad[-1]["eligible"]
                 resumed = await stage(2, "autod", 8)
                 eligible = [r for r in resumed if r["eligible"]]
@@ -79,6 +82,11 @@ async def main(library):
         trace.write_bytes(b"".join(records))
         process = await asyncio.create_subprocess_exec(*cmd,"replay",str(trace))
         assert await process.wait() == 0
+        chosen = next(r for r in rows if r["decision"]["status"] == "choice")
+        chosen["decision"]["logits"]["wait"] += 1
+        trace.write_text("".join(json.dumps(r)+"\n" for r in rows))
+        process = await asyncio.create_subprocess_exec(*cmd,"replay",str(trace))
+        assert await process.wait() == 1
 
 
 if __name__ == "__main__":

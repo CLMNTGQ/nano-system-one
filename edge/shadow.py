@@ -1,19 +1,16 @@
 """Read-only scorer sidecar. Read resampled upstream JSON events from stdin."""
 import argparse
-import ctypes as ct
+from choice import ChoiceScorer
 import json
 import sys
 import time
 from collections import deque
 from pathlib import Path
 
-NAMES = ("track", "search", "wait")
 
 
 def run(library, max_age_ms):
-    score = ct.CDLL(str(library.resolve())).nso_select
-    score.argtypes = [ct.POINTER(ct.c_uint8), ct.c_uint, ct.c_int, ct.POINTER(ct.c_float)]
-    score.restype = ct.c_int
+    scorer = ChoiceScorer(library)
     frames = deque(maxlen=6)
     last_session = last_tick = last_generation = last_capture = None
     for line in sys.stdin:
@@ -29,17 +26,19 @@ def run(library, max_age_ms):
         last_session, last_tick, last_generation, last_capture = session, tick, generation, capture
         start = time.monotonic_ns()
         age = start - capture
-        current = event["autonomous"] is True and 0 <= age <= max_age_ms * 1_000_000
-        choice = -1
-        if len(frames) == 6 and current:
-            choice = score((ct.c_uint8 * 6)(*frames), mask, 1, None)
+        blocked = None
+        if event["autonomous"] is not True:
+            blocked = "ownership_lost"
+        elif not 0 <= age <= max_age_ms * 1_000_000:
+            blocked = "stale_snapshot"
+        decision = scorer.decide(frames, mask, blocked)
         finish = time.monotonic_ns()
-        if finish - capture > max_age_ms * 1_000_000:
-            choice = -1
+        if decision["status"] == "choice" and finish - capture > max_age_ms * 1_000_000:
+            decision = scorer.decide(frames, mask, "stale_snapshot")
         print(json.dumps(dict(session=session, tick=tick, capture_mono_ns=capture,
                               symbol=symbol, history=list(frames), admissible_mask=mask,
                               ownership_generation=generation, autonomous=event["autonomous"],
-                              proposal=NAMES[choice] if choice >= 0 else "defer",
+                              trace_version=2, decision=decision, proposal=decision.get("selected", "defer"),
                               executed=event["executed"], age_ms=(finish-capture)/1e6,
                               processing_us=(finish-start)/1e3)), flush=True)
 
