@@ -1,5 +1,7 @@
 # Choosing a behavior after losing sight of a ball
 
+This design record covers the original ball experiment. See the [person-follow architecture and integration](person-follow.md) for the current use case.
+
 MicroDuck is tracking a ball when a detection disappears. A single missed frame and several seconds of valid frames without a detection both show an absent target. The appropriate response depends on the history. Missing camera updates introduce a third case: the robot has no current evidence about visibility.
 
 ## Decision contract

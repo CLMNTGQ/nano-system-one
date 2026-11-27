@@ -1,5 +1,7 @@
 # MicroDuck decision architecture
 
+This design record covers the original ball experiment. See the [person-follow architecture and integration](person-follow.md) for the current use case.
+
 ## Runtime boundary
 
 The offline prototype implements only the scorer. The proposed on-device integration uses the following data flow.
