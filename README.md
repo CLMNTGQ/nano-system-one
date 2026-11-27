@@ -1,5 +1,7 @@
 # nano-system-one
 
+![Three MicroDuck robots in a harbor training hangar, with a red ball beside the central robot.](images/nano-system-one-banner.webp)
+
 An experimental decision model for edge robotics. The first application is MicroDuck ball tracking. Given recent observations and the behaviors currently available, the model scores each behavior in one forward pass. The robot controller decides whether to act.
 
 ## Design question
