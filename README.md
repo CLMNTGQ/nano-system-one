@@ -32,3 +32,7 @@ The MLP fits three illustrative snapshots. The encoder prints an attention row, 
 ## Train off-device and run on the robot CPU
 
 The [training and deployment record](docs/edge-training.md) describes the synthetic episode splits, comparisons, and the C inference interface. The first trained model is shipped as an exhaustive table of Transformer logits for six ternary sensor observations. Its 8,748-byte payload lets an ARM64 caller score an admissible subset of behaviors locally. The native component can be built without Python. Robot integration and physical evaluation are pending.
+
+## Inspect the episodes and decisions
+
+[Training episodes](data/train.jsonl) · [Validation episodes](data/validation.jsonl) · [Test episodes](data/test.jsonl) · [Independent design fixtures](data/review-cases.jsonl). See the [replay audit, OODA telemetry contract and paired robot trials](docs/replay-and-trials.md) for reproduction and integration details.

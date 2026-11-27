@@ -1,0 +1,32 @@
+name: Decision replay
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'audit_replay.py'
+      - 'episodes.py'
+      - 'train.py'
+      - 'edge/scores.inc'
+      - 'data/**'
+      - '.github/workflows/decision-replay.yml'
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          pip install numpy==2.3.5
+          pip install --index-url https://download.pytorch.org/whl/cpu torch==2.15.0
+          python audit_replay.py --output build/audit --with-mlp
+          for split in train validation test; do diff data/$split.jsonl build/audit/data/$split.jsonl; done
+          diff reports/switches.jsonl build/audit/reports/switches.jsonl
+      - uses: actions/upload-artifact@v4
+        with:
+          name: decision-replay
+          path: build/audit

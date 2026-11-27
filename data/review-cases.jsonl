@@ -1,0 +1,6 @@
+{"id":"brief-occlusion","frames":[2,2,2,2,2,2,1,1,2,2],"labels":["track","wait","wait","track","track"],"rationale":"A sustained track is interrupted for two frames; resume immediately on return."}
+{"id":"long-loss","frames":[2,2,2,2,2,2,1,1,1,1,1,1],"labels":["track","wait","wait","wait|search","search","search","search"],"rationale":"Grant a transition window before sustained search."}
+{"id":"isolated-flash","frames":[1,1,1,1,1,1,2,1,1,1,1],"labels":["search","wait|search","search","search","search","search"],"rationale":"A brief candidate may interrupt search once; continued absence favors resuming it."}
+{"id":"camera-outage","frames":[2,2,2,2,2,2,0,0,0,1,1],"labels":["track","defer","defer","defer","wait","wait|search"],"rationale":"Missing camera updates do not establish target absence; allow reacquisition after recovery."}
+{"id":"confirmed-return","frames":[1,1,1,1,1,1,2,2,2],"labels":["search","wait|search","track","track"],"rationale":"A second consecutive sighting confirms the return."}
+{"id":"noisy-return","frames":[1,1,1,1,1,1,2,1,2,1,2],"labels":["search","search|wait","search","wait|search","search","wait|search"],"rationale":"Alternating detections are weak evidence for sustained tracking."}
