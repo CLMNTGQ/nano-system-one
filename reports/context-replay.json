@@ -1,0 +1,753 @@
+{
+  "summary_mlp_seed": 17,
+  "context_weights": [
+    [
+      -0.5289673850312513,
+      -0.3057074422669721,
+      -0.2759013144817048,
+      0.03539765169098656,
+      0.44949849000362824,
+      -0.029806127785267002,
+      -0.10937475695993984,
+      -0.5235627849942012,
+      -0.5318707303409258
+    ],
+    [
+      0.5307752232774754,
+      0.014367629730434704,
+      0.5318337678691836,
+      0.03058345864806203,
+      -0.02174633803280315,
+      -0.5174661381387483,
+      0.11853535684922667,
+      0.41249713280830486,
+      0.9678805968435713
+    ],
+    [
+      -0.0018078382462235632,
+      0.291339812536537,
+      -0.25593245338747894,
+      -0.06598111033904859,
+      -0.4277521519708256,
+      0.5472722659240156,
+      -0.009160599889286969,
+      0.11106565218589744,
+      -0.43600986650264445
+    ]
+  ],
+  "development": {
+    "ticks": 34,
+    "accepted": {
+      "rule": 25,
+      "mlp": 27,
+      "transformer": 26,
+      "context": 27
+    },
+    "detail": [
+      {
+        "id": "brief-occlusion",
+        "tick": 5,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "brief-occlusion",
+        "tick": 6,
+        "accepted": [
+          "wait"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "brief-occlusion",
+        "tick": 7,
+        "accepted": [
+          "wait"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "search"
+      },
+      {
+        "id": "brief-occlusion",
+        "tick": 8,
+        "accepted": [
+          "track"
+        ],
+        "rule": "wait",
+        "mlp": "track",
+        "transformer": "wait",
+        "context": "search"
+      },
+      {
+        "id": "brief-occlusion",
+        "tick": 9,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "long-loss",
+        "tick": 5,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "long-loss",
+        "tick": 6,
+        "accepted": [
+          "wait"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "long-loss",
+        "tick": 7,
+        "accepted": [
+          "wait"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "search"
+      },
+      {
+        "id": "long-loss",
+        "tick": 8,
+        "accepted": [
+          "wait",
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "long-loss",
+        "tick": 9,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "long-loss",
+        "tick": 10,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "long-loss",
+        "tick": 11,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "isolated-flash",
+        "tick": 5,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "isolated-flash",
+        "tick": 6,
+        "accepted": [
+          "wait",
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "isolated-flash",
+        "tick": 7,
+        "accepted": [
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "search"
+      },
+      {
+        "id": "isolated-flash",
+        "tick": 8,
+        "accepted": [
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "search"
+      },
+      {
+        "id": "isolated-flash",
+        "tick": 9,
+        "accepted": [
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "isolated-flash",
+        "tick": 10,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "camera-outage",
+        "tick": 5,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "camera-outage",
+        "tick": 6,
+        "accepted": [
+          "defer"
+        ],
+        "rule": "defer",
+        "mlp": "defer",
+        "transformer": "defer",
+        "context": "defer"
+      },
+      {
+        "id": "camera-outage",
+        "tick": 7,
+        "accepted": [
+          "defer"
+        ],
+        "rule": "defer",
+        "mlp": "defer",
+        "transformer": "defer",
+        "context": "defer"
+      },
+      {
+        "id": "camera-outage",
+        "tick": 8,
+        "accepted": [
+          "defer"
+        ],
+        "rule": "defer",
+        "mlp": "defer",
+        "transformer": "defer",
+        "context": "defer"
+      },
+      {
+        "id": "camera-outage",
+        "tick": 9,
+        "accepted": [
+          "wait"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "camera-outage",
+        "tick": 10,
+        "accepted": [
+          "wait",
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "confirmed-return",
+        "tick": 5,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "confirmed-return",
+        "tick": 6,
+        "accepted": [
+          "wait",
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "confirmed-return",
+        "tick": 7,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "confirmed-return",
+        "tick": 8,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "noisy-return",
+        "tick": 5,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "noisy-return",
+        "tick": 6,
+        "accepted": [
+          "search",
+          "wait"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "noisy-return",
+        "tick": 7,
+        "accepted": [
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "search"
+      },
+      {
+        "id": "noisy-return",
+        "tick": 8,
+        "accepted": [
+          "wait",
+          "search"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "noisy-return",
+        "tick": 9,
+        "accepted": [
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "noisy-return",
+        "tick": 10,
+        "accepted": [
+          "wait",
+          "search"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      }
+    ]
+  },
+  "holdout": {
+    "ticks": 28,
+    "accepted": {
+      "rule": 25,
+      "mlp": 24,
+      "transformer": 24,
+      "context": 26
+    },
+    "detail": [
+      {
+        "id": "return-after-short-gap",
+        "tick": 5,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "return-after-short-gap",
+        "tick": 6,
+        "accepted": [
+          "wait"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "return-after-short-gap",
+        "tick": 7,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "return-after-short-gap",
+        "tick": 8,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "return-after-short-gap",
+        "tick": 9,
+        "accepted": [
+          "wait"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "single-flash-during-search",
+        "tick": 5,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "single-flash-during-search",
+        "tick": 6,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "single-flash-during-search",
+        "tick": 7,
+        "accepted": [
+          "wait",
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "single-flash-during-search",
+        "tick": 8,
+        "accepted": [
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "search"
+      },
+      {
+        "id": "single-flash-during-search",
+        "tick": 9,
+        "accepted": [
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "search"
+      },
+      {
+        "id": "interrupted-camera",
+        "tick": 5,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "interrupted-camera",
+        "tick": 6,
+        "accepted": [
+          "wait"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "interrupted-camera",
+        "tick": 7,
+        "accepted": [
+          "defer"
+        ],
+        "rule": "defer",
+        "mlp": "defer",
+        "transformer": "defer",
+        "context": "defer"
+      },
+      {
+        "id": "interrupted-camera",
+        "tick": 8,
+        "accepted": [
+          "defer"
+        ],
+        "rule": "defer",
+        "mlp": "defer",
+        "transformer": "defer",
+        "context": "defer"
+      },
+      {
+        "id": "interrupted-camera",
+        "tick": 9,
+        "accepted": [
+          "wait"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "interrupted-camera",
+        "tick": 10,
+        "accepted": [
+          "wait",
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "interrupted-camera",
+        "tick": 11,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "stable-return-after-outage",
+        "tick": 5,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "stable-return-after-outage",
+        "tick": 6,
+        "accepted": [
+          "defer"
+        ],
+        "rule": "defer",
+        "mlp": "defer",
+        "transformer": "defer",
+        "context": "defer"
+      },
+      {
+        "id": "stable-return-after-outage",
+        "tick": 7,
+        "accepted": [
+          "wait",
+          "search"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "stable-return-after-outage",
+        "tick": 8,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "wait",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "stable-return-after-outage",
+        "tick": 9,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "loss-with-one-gap",
+        "tick": 5,
+        "accepted": [
+          "track"
+        ],
+        "rule": "track",
+        "mlp": "track",
+        "transformer": "track",
+        "context": "track"
+      },
+      {
+        "id": "loss-with-one-gap",
+        "tick": 6,
+        "accepted": [
+          "wait"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "wait",
+        "context": "wait"
+      },
+      {
+        "id": "loss-with-one-gap",
+        "tick": 7,
+        "accepted": [
+          "defer"
+        ],
+        "rule": "defer",
+        "mlp": "defer",
+        "transformer": "defer",
+        "context": "defer"
+      },
+      {
+        "id": "loss-with-one-gap",
+        "tick": 8,
+        "accepted": [
+          "wait"
+        ],
+        "rule": "wait",
+        "mlp": "wait",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "loss-with-one-gap",
+        "tick": 9,
+        "accepted": [
+          "wait",
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      },
+      {
+        "id": "loss-with-one-gap",
+        "tick": 10,
+        "accepted": [
+          "search"
+        ],
+        "rule": "search",
+        "mlp": "search",
+        "transformer": "search",
+        "context": "search"
+      }
+    ]
+  }
+}

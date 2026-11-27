@@ -1,0 +1,35 @@
+name: Field validation fixtures
+on:
+  push:
+    paths:
+      - 'edge/**'
+      - 'experiments/**'
+      - 'data/**'
+      - 'tests/trace_transport.py'
+      - '.github/workflows/field-validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          cc -std=c99 -Os -shared -fPIC edge/scorer.c -o /tmp/libnso.so
+          python tests/trace_transport.py /tmp/libnso.so
+          node experiments/context-replay.mjs > /tmp/context.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          expected = json.loads(Path("reports/context-replay.json").read_text())
+          actual = json.loads(Path("/tmp/context.json").read_text())
+          for split in ("development", "holdout"):
+              assert actual[split] == expected[split]
+          PY

@@ -36,3 +36,7 @@ The [training and deployment record](docs/edge-training.md) describes the synthe
 ## Inspect the episodes and decisions
 
 [Training episodes](data/train.jsonl) · [Validation episodes](data/validation.jsonl) · [Test episodes](data/test.jsonl) · [Independent design fixtures](data/review-cases.jsonl). See the [replay audit, OODA telemetry contract and paired robot trials](docs/replay-and-trials.md) for reproduction and integration details.
+
+## Field validation
+
+[Transition criteria, contextual replay results and live OODA capture](docs/ooda-field-validation.md) · [Paired decision traces](reports/context-replay.json). The live subscriber and closed-loop analysis await measurements from a physical robot.

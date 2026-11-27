@@ -1,0 +1,5 @@
+{"id":"return-after-short-gap","frames":[2,2,2,2,2,2,1,2,2,1],"labels":["track","wait","track","track","wait"]}
+{"id":"single-flash-during-search","frames":[1,1,1,1,1,1,1,2,1,1],"labels":["search","search","wait|search","search","search"]}
+{"id":"interrupted-camera","frames":[2,2,2,2,2,2,1,0,0,1,1,1],"labels":["track","wait","defer","defer","wait","wait|search","search"]}
+{"id":"stable-return-after-outage","frames":[1,1,1,1,1,1,0,2,2,2],"labels":["search","defer","wait|search","track","track"]}
+{"id":"loss-with-one-gap","frames":[2,2,2,2,2,2,1,0,1,1,1],"labels":["track","wait","defer","wait","wait|search","search"]}
