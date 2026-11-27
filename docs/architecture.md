@@ -33,3 +33,7 @@ Record episode ID, monotonic sample and capture times, detection validity, time 
 4. **Closed-loop evaluation.** After integration checks, compare reacquisition time and successful reacquisition rate across repeated matched trials. Record hardware, firmware, runtime and model versions alongside results.
 
 No device benchmarks, trained deployment weights or RKNN artifact are available at this stage. [RKNN-Toolkit2 supported platforms](https://github.com/airockchip/rknn-toolkit2)
+
+## Temporal encoder experiment
+
+[Lesson 1](lesson-01.md) introduces a one-block Transformer over an observation window and the admissible behaviors. Each option reads the shared history with its own query. The encoder is an offline forward-pass prototype. Its value over the MLP is an empirical question for episode replay.

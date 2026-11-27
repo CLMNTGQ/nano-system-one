@@ -15,3 +15,7 @@ The example trains a shared MLP on three illustrative snapshots and prints the p
 - [Problem and proposed solution](docs/problem.md)
 - [Architecture and evaluation plan](docs/architecture.md)
 - [Model and learning rule](model.py)
+
+## Build the Transformer
+
+Read [Lesson 1: From a missed detection to three logits](docs/lesson-01.md) alongside [the encoder](transformer.py). Run `python transformer.py` to trace a two-head attention block and the choice distribution at random initialization. The MLP above provides the first comparison point.
