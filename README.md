@@ -4,6 +4,25 @@
 
 nano-system-one is a from-scratch experiment in **structured decision output on an edge robot**. Each inference answers a bounded question: given recent observations, which allowed behavior should the MicroDuck propose? The controller consumes a behavior identifier and retains authority to act.
 
+## Current use case · Follow one person
+
+MicroDuck should follow one participant who walks away, hold position within a chosen distance band and stop when the target is lost. The new `person-follow-v1` prototype reads a short history of detected person boxes and proposes **follow**, **hold_distance** or **stop**. The controller owns motion. The first release supports observation and replay.
+
+**Run a decision trace** from the repository root with Python 3 and NumPy:
+
+```sh
+python3 -m person_follow person_follow/example.jsonl
+python3 -m person_follow person_follow/example.jsonl --model person_follow/checkpoints/transformer.json
+```
+
+The example and trained weights come from synthetic episodes. On 20 held-out synthetic episodes, agreement on eligible windows was 93.2% for the rule, 95.3% for the MLP and 96.4% for the Transformer. The Transformer issued fewer unwanted forward proposals but switched between follow and hold more often. Physical target tracking, distance calibration and on-board timing await the first robot trial.
+
+[Capture your first MicroDuck person-follow session, inspect the math and reproduce training](docs/person-follow.md) · [Test results](person_follow/checkpoints/results.json)
+
+## Earlier use case · Ball tracking
+
+The following quick start and experiments reproduce the original ball decision contract. Its native lookup table and training data apply to ball tracking.
+
 ## Run System One on your MicroDuck
 
 This quick start runs the trained model **on the robot CPU in shadow mode**. It reads ball detections and robot state, proposes `track`, `search` or `wait`, and records the controller's reported phase alongside the proposal. MicroDuck's existing controller continues to drive the robot. The shipped integration supports observation and replay; using the proposal to drive the motors would require a command adapter.

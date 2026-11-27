@@ -1,0 +1,37 @@
+{
+  "source": "synthetic proxy",
+  "episodes": {
+    "train": 80,
+    "val": 20,
+    "test": 20
+  },
+  "test": {
+    "rule": {
+      "labeled_ticks": 1000,
+      "accuracy": 0.718,
+      "eligible_accuracy": 0.9318181818181818,
+      "unwanted_follow_ticks": 21,
+      "follow_hold_switches": 4,
+      "loss_to_stop_completed": 40,
+      "max_observation_loss_to_stop_s": 0.0
+    },
+    "mlp": {
+      "labeled_ticks": 1000,
+      "accuracy": 0.732,
+      "eligible_accuracy": 0.953030303030303,
+      "unwanted_follow_ticks": 13,
+      "follow_hold_switches": 6,
+      "loss_to_stop_completed": 40,
+      "max_observation_loss_to_stop_s": 0.0
+    },
+    "transformer": {
+      "labeled_ticks": 1000,
+      "accuracy": 0.739,
+      "eligible_accuracy": 0.9636363636363636,
+      "unwanted_follow_ticks": 7,
+      "follow_hold_switches": 18,
+      "loss_to_stop_completed": 40,
+      "max_observation_loss_to_stop_s": 0.0
+    }
+  }
+}
