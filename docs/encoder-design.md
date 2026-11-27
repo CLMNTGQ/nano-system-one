@@ -1,6 +1,6 @@
 # Temporal encoder design
 
-**Status.** The forward pass is implemented in [transformer.py](../transformer.py). The choice of a temporal Transformer for deployment is provisional.
+**Status.** The forward pass is implemented in [transformer.py](../transformer.py). A trained instance and its native CPU export are described in the [embedded experiment](edge-training.md). Physical deployment awaits validation on robot sessions.
 
 ## Context and influences
 

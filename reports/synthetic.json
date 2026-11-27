@@ -1,0 +1,59 @@
+{
+  "timeout": {
+    "threshold": 3,
+    "acceptable_rate": 0.9106,
+    "premature_search_ticks": 0,
+    "unnecessary_switches": 98,
+    "search_delay_ticks_when_found": 0.0,
+    "missed_search_intervals": 0,
+    "search_intervals": 59,
+    "deferred_ticks": 50
+  },
+  "mlp": {
+    "selected_seed_epoch": [
+      27,
+      12
+    ],
+    "validation_loss_by_seed": {
+      "7": 0.39371,
+      "17": 0.397304,
+      "27": 0.340486
+    },
+    "acceptable_rate": 0.9079,
+    "premature_search_ticks": 0,
+    "unnecessary_switches": 48,
+    "search_delay_ticks_when_found": 0.05084745762711865,
+    "missed_search_intervals": 0,
+    "search_intervals": 59,
+    "deferred_ticks": 50,
+    "test_set_loss": 0.3607361912727356
+  },
+  "transformer": {
+    "selected_seed_epoch": [
+      17,
+      12
+    ],
+    "validation_loss_by_seed": {
+      "7": 0.007183,
+      "17": 0.002206,
+      "27": 0.005228
+    },
+    "acceptable_rate": 1.0,
+    "premature_search_ticks": 0,
+    "unnecessary_switches": 82,
+    "search_delay_ticks_when_found": 0.0,
+    "missed_search_intervals": 0,
+    "search_intervals": 59,
+    "deferred_ticks": 50,
+    "test_set_loss": 0.0022967257536947727
+  },
+  "last_frame_repeated": {
+    "acceptable_rate": 0.7064,
+    "premature_search_ticks": 226,
+    "unnecessary_switches": 0,
+    "search_delay_ticks_when_found": 0.0,
+    "missed_search_intervals": 0,
+    "search_intervals": 59,
+    "deferred_ticks": 50
+  }
+}

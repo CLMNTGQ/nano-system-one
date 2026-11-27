@@ -9,8 +9,8 @@ When the ball disappears, does the sequence of detections and missed frames cont
 | Component | Current status |
 |---|---|
 | [MLP baseline](model.py) | Manual SGD update and a three-snapshot fitting example |
-| [Temporal Transformer](transformer.py) | NumPy forward pass with an explicit attention mask and shared candidate readout |
-| MicroDuck integration | Proposed asynchronous interface; episode replay and device benchmarks are pending |
+| [Temporal Transformer](transformer.py) | NumPy reference and a trained PyTorch encoder with shared candidate readout |
+| MicroDuck integration | Synthetic replay completed; native AArch64 scorer cross-compiled; physical integration pending |
 
 ## Design documents
 
@@ -28,3 +28,7 @@ python transformer.py
 ```
 
 The MLP fits three illustrative snapshots. The encoder prints an attention row, logits, and choice probabilities at random initialization. These outputs make the computation inspectable. Assessing behavior quality requires episode data.
+
+## Train off-device and run on the robot CPU
+
+The [training and deployment record](docs/edge-training.md) describes the synthetic episode splits, comparisons, and the C inference interface. The first trained model is shipped as an exhaustive table of Transformer logits for six ternary sensor observations. Its 8,748-byte payload lets an ARM64 caller score an admissible subset of behaviors locally. The native component can be built without Python. Robot integration and physical evaluation are pending.

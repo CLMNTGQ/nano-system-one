@@ -32,7 +32,7 @@ Record episode ID, monotonic sample and capture times, detection validity, time 
 3. **Deployment comparison.** Benchmark CPU first. If profiling justifies acceleration, export a fixed-shape scorer, convert with RKNN-Toolkit2 for RK3566, and compare INT8 outputs against floating point using representative held-out states. Include transfers and concurrent perception load in timing. Calibration for INT8 activation ranges and calibration of choice probabilities are separate measurements.
 4. **Closed-loop evaluation.** After integration checks, compare reacquisition time and successful reacquisition rate across repeated matched trials. Record hardware, firmware, runtime and model versions alongside results.
 
-No device benchmarks, trained deployment weights or RKNN artifact are available at this stage. [RKNN-Toolkit2 supported platforms](https://github.com/airockchip/rknn-toolkit2)
+A [trained CPU export and synthetic replay report](edge-training.md) are available. Device benchmarks are pending. [RKNN-Toolkit2 supported platforms](https://github.com/airockchip/rknn-toolkit2)
 
 ## Temporal encoder experiment
 
