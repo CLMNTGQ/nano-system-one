@@ -2,7 +2,13 @@
 
 ![Three MicroDuck robots in a harbor training hangar, with a red ball beside the central robot.](images/nano-system-one-banner.webp)
 
-An experimental decision model for edge robotics. The first application is MicroDuck ball tracking. Given recent observations and the behaviors currently available, the model scores each behavior in one forward pass. The robot controller decides whether to act.
+nano-system-one is a from-scratch experiment in **structured decision output on an edge robot**. Each inference answers a bounded question: given recent observations, which allowed behavior should the MicroDuck propose? The controller consumes a behavior identifier and retains authority to act.
+
+## What comes out of the model?
+
+The first output type is **Choice**. MicroDuck defines three identifiers in a fixed order: `track`, `search`, `wait`. The trained Transformer supplies one logit per identifier. The native selector applies the caller's admissibility mask and returns the highest-scoring allowed identifier. When a decision cannot be issued, the caller gets `NSO_DEFER`. A valid choice can still be wrong for the situation; episode replay evaluates that separate question.
+
+For example, after four sightings and two valid misses, the exported model scores `track` at −6.490, `search` at −6.331 and `wait` at 0.739 (rounded). With all three behaviors allowed, the C call returns `NSO_WAIT`. With the same history and an empty mask it returns `NSO_DEFER`. **Waiting is a behavior. Deferring returns control to the caller.** See the [output contract and native identifiers](docs/problem.md#decision-contract).
 
 ## Design question
 

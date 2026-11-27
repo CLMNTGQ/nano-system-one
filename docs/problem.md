@@ -4,7 +4,18 @@ MicroDuck is tracking a ball when a detection disappears. A single missed frame 
 
 ## Decision contract
 
-At each decision tick, the caller supplies an observation and a nonempty set of admissible behaviors. The model returns one logit per candidate. The caller can normalize the scores and select a behavior, defer to the existing controller, or drop an expired result. Candidate identifiers travel with their descriptors so that scores map back to behaviors.
+**Question.** Which admissible behavior fits the latest six observations? The application defines the vocabulary. TypeSafe's Jev inspired this bounded interface. The first implemented primitive is a categorical choice for ball tracking. [TypeSafe AI, Introducing System One Models & Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev)
+
+| Model or controller concept | Trace label | Native result | Mask bit |
+|---|---|---|---|
+| Follow the target (`track_target`) | `track` | `NSO_TRACK` = 0 | 1 |
+| Look for the target (`search_target`) | `search` | `NSO_SEARCH` = 1 | 2 |
+| Hold the current activity as specified by the wait behavior | `wait` | `NSO_WAIT` = 2 | 4 |
+| Return control without proposing a behavior | `defer` | `NSO_DEFER` = −1 | — |
+
+On success, `nso_select` returns an identifier enabled by the mask and optionally writes all three raw logits in enum order, including those of masked candidates. A caller that needs probabilities can apply softmax over just the allowed candidates. Those probabilities require field calibration before they can support a confidence threshold. Equal logits select the lowest allowed enum index.
+
+On deferral the optional logit buffer stays untouched; callers must branch on the result before reading it. Causes include missing current observation, invalid input, empty mask, or a caller reporting stale state or loss of ownership. The native result groups those causes under one value. The controller rechecks admissibility at dispatch and records actual behavior separately from the proposal. [C interface](../edge/scorer.h) · [Implementation](../edge/scorer.c)
 
 | Example situation | Proposed behavior | Meaning |
 |---|---|---|
